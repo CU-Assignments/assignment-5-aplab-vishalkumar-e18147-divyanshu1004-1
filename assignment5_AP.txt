@@ -1,0 +1,169 @@
+389. Find the Difference
+
+class Solution(object):
+    def findTheDifference(self, s, t):
+        a=0
+        b=0
+        for c in t:
+            a=a+ord(c)
+        for c in s:
+            b=b+ord(c)
+        res=a-b
+        return(chr(res))
+
+---------------------------------------------------------------------------------------------------------------------
+
+976.Largest Perimeter Triangle
+
+class Solution {
+public:
+    int largestPerimeter(vector<int>& nums) {
+        sort(nums.begin(),nums.end(),greater<int>());
+        int n= nums.size();
+        
+        for(int i=0;i<n-2;i++){
+            if(nums[i]<nums[i+1]+nums[i+2]){
+                return nums[i]+nums[i+1]+nums[i+2];
+            }
+        }
+        return 0;
+    }
+};
+
+---------------------------------------------------------------------------------------------------------------------
+414. Third Maximum Number
+
+class Solution {
+public:
+    int thirdMax(std::vector<int>& nums) {
+        std::set<int> top3; 
+
+        for (int num : nums) {
+            top3.insert(num);
+            if (top3.size() > 3) {
+                top3.erase(top3.begin()); 
+            }
+        }
+
+        if (top3.size() == 3) {
+            return *top3.begin(); 
+        } else {
+            return *top3.rbegin(); 
+        }
+    }
+};
+
+
+451. Sort Characters By Frequency
+
+class Solution {
+public:
+    string frequencySort(string s) {
+        unordered_map<char,int> m;
+        for(char c: s){
+            m[c]++;
+        }
+        int n =s.size();
+        vector<string> res(n+1,"");
+        for(auto& p: m){
+            res[p.second]+=string(p.second, p.first);
+        }
+        string ans;
+        for(int i=n;i>0;i--){
+            if(!res[i].empty()) ans += res[i];
+        }
+        return ans;
+
+    }
+};
+
+---------------------------------------------------------------------------------------------------------------------
+
+452. Minimum Number of Arrows to Burst Balloons
+
+class Solution {
+public:
+    int findMinArrowShots(vector<vector<int>>& points) {
+        if (points.empty()) return 0;
+        sort(points.begin(), points.end(), [](const vector<int>& a, const vector<int>& b) {
+            return a[1] < b[1]; 
+        });
+
+        int arrows = 1;  
+        int lastArrow = points[0][1];  
+
+        for (const auto& balloon : points) {
+            if (balloon[0] > lastArrow) { 
+                arrows++;  
+                lastArrow = balloon[1];  
+            }
+        }
+
+        return arrows;
+    }
+};
+---------------------------------------------------------------------------------------------------------------------
+881. Boats to Save People
+
+class Solution {
+public:
+    int numRescueBoats(vector<int>& people, int limit) {
+        sort(people.begin(), people.end()); 
+        int left = 0, right = people.size() - 1;
+        int boats = 0;
+
+        while (left <= right) {
+            if (people[left] + people[right] <= limit) {
+                left++; 
+            }
+            right--; 
+            boats++; 
+        }
+        return boats;
+    }
+};
+---------------------------------------------------------------------------------------------------------------------
+973. K Closest Points to Origin
+
+class Solution {
+public:
+    vector<vector<int>> kClosest(vector<vector<int>>& points, int k) {
+        sort(points.begin(), points.end(), [](const vector<int>& a, const vector<int>& b) {
+            return (a[0] * a[0] + a[1] * a[1]) < (b[0] * b[0] + b[1] * b[1]);
+        });
+
+        return vector<vector<int>>(points.begin(), points.begin() + k);
+    }
+};
+
+---------------------------------------------------------------------------------------------------------------------
+
+
+1338. Reduce Array Size to The Half
+
+class Solution {
+public:
+    int minSetSize(vector<int>& arr) {
+        unordered_map<int, int> freq;
+
+        for (int num : arr) {
+            freq[num]++;
+        }
+        vector<int> counts;
+        for (auto& p : freq) {
+            counts.push_back(p.second);
+        }
+        sort(counts.rbegin(), counts.rend()); 
+
+        int removed = 0, setSize = 0, half = arr.size() / 2;
+        for (int count : counts) {
+            removed += count;
+            setSize++;
+            if (removed >= half) {
+                return setSize;
+            }
+        }
+
+        return setSize;
+    }
+};
